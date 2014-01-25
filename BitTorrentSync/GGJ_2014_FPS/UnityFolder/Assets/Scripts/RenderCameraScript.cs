@@ -8,6 +8,8 @@ public class RenderCameraScript : MonoBehaviour
 	public int textureWidth = 108;
 	public int textureHeight = 72;
 	Camera renderCamera;
+
+	public GameObject pairedScreen;
 	// Use this for initialization
 	void Start () 
 	{
@@ -16,6 +18,10 @@ public class RenderCameraScript : MonoBehaviour
 		renderCamera.targetTexture = renderTexture;
 		Vector3 parentScale = transform.parent.localScale;
 		transform.localScale = new Vector3(transform.localScale.x/parentScale.x , transform.localScale.y/parentScale.y, transform.localScale.z/parentScale.z);
+
+		//
+		pairedScreen = transform.parent.gameObject;
+
 	}
 	
 	// Update is called once per frame

@@ -105,7 +105,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 			{
 				if(Input.GetButtonUp("Fire2"))
 				{
-					GrabGameOobject(tempHitInfo.transform.gameObject);
+					GrabGameOobject(tempHitInfo, renderCamera);
 				}
 				
 			}
@@ -124,10 +124,67 @@ public class PlayerLaserPointerScript : MonoBehaviour
 
 	}
 
-	void GrabGameOobject(GameObject targetGameObject)
+	void GrabGameOobject(RaycastHit grabObjectHitInfo, Camera lastCamera)
 	{
+		GameObject targetGameObject = grabObjectHitInfo.transform.gameObject;
+
+		if(targetGameObject.GetComponent<GrabbableObjectScript>().isScaled == true)
+		{
+			targetGameObject.transform.localScale *= CalculateScreenScale(grabObjectHitInfo, lastCamera);
+		}
+
 		targetGameObject.transform.parent = transform;
 		targetGameObject.transform.localPosition = grabbedObjectPosition;
+	}
+
+	float CalculateScreenScale(RaycastHit grabObjectHitInfo, Camera lastCamera)
+	{
+		//distance from last camera to object
+		float distanceToObject = grabObjectHitInfo.distance;
+		float cameraFOV = lastCamera.fieldOfView;
+
+		// TRIG TIME
+		float cameraWidth = distanceToObject * Mathf.Tan(cameraFOV * Mathf.Deg2Rad);
+		
+		// need to find width of the physical screen displaying this camera (this allows us to caluclated the scaling)
+		GameObject screenObject = lastCamera.transform.gameObject.GetComponent<RenderCameraScript>().pairedScreen;
+		Bounds screenBounds = screenObject.GetComponent<Renderer>().bounds;
+		float screenWidth = screenBounds.size.x;
+
+		// how much space does the screen take up in the players camera
+		/*
+		Vector3 virtualAlignedScreenPos = playerCamera.transform.position + new Vector3(0, 0, Vector3.Distance(screenObject.transform.position, playerCamera.transform.position));
+		Vector3 screenLeft = virtualAlignedScreenPos - new Vector3(screenWidth/2.0f,0,0);
+		Vector3 screenRight = virtualAlignedScreenPos + new Vector3(screenWidth/2.0f,0,0);
+
+		Vector3 screenCoordLeft = playerCamera.WorldToViewportPoint(screenLeft);
+		Vector3 screenCoordRight = playerCamera.WorldToViewportPoint(screenRight);
+
+		Debug.Log(screenCoordLeft);
+		Debug.Log(screenCoordRight);
+		*/
+
+
+		
+		float scaleRatio = screenWidth / cameraWidth;
+		/*
+		float playerCameraScaleRatio = screenWidth /Vector3.Distance(screenObject.transform.position, playerCamera.transform.position);
+		Debug.Log(screenWidth);
+		Debug.Log(Vector3.Distance(screenObject.transform.position, playerCamera.transform.position));
+		Debug.Log(playerCameraScaleRatio);
+
+		*/
+
+
+		Vector3 screenCoordLeft = playerCamera.WorldToViewportPoint(screenBounds.min);
+		Vector3 screenCoordRight = playerCamera.WorldToViewportPoint(screenBounds.max);
+		screenCoordLeft.z = 0;
+		screenCoordRight.z = 0;
+		float viewportScaler =  Vector3.Distance(screenCoordLeft, screenCoordRight);
+
+		Debug.Log(viewportScaler);
+
+		return scaleRatio * viewportScaler ;
 	}
 
 
