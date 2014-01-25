@@ -58,6 +58,11 @@ public class PlayerLaserPointerScript : MonoBehaviour
 
 
 		HandleLaser();
+
+		if(Input.GetButtonUp("Fire1"))
+		{
+			transform.position = cursorObject.transform.position;
+		}
 	}
 
 	void HandleLaser()
@@ -87,7 +92,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 
 		// place cursor in world space 
 		Camera renderCamera = screenObject.GetComponent<ScreenObjectScript>().pairedCamera;
-		Vector3 pixelCoord = new Vector3( renderCamera.pixelWidth * screenObjectHitInfo.textureCoord.x, renderCamera.pixelHeight * screenObjectHitInfo.textureCoord.y, 2);
+		Vector3 pixelCoord = new Vector3( renderCamera.pixelWidth * screenObjectHitInfo.textureCoord.x, renderCamera.pixelHeight * screenObjectHitInfo.textureCoord.y, 10);
 		
 
 		Vector3 worldPositionCursor = renderCamera.ScreenToWorldPoint(pixelCoord);
