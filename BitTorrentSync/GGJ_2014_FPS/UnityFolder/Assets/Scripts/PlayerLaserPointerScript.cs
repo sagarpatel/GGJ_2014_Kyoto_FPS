@@ -7,6 +7,8 @@ public class PlayerLaserPointerScript : MonoBehaviour
 	Camera playerCamera;
 	LineRenderer laserRenderer;
 
+	public Material laserRendererMaterial;
+
 	public Color laserColor_start = Color.red;
 	public Color laserColor_end = Color.blue;
 	public float laserStartOffset = 0.2f;
@@ -24,9 +26,9 @@ public class PlayerLaserPointerScript : MonoBehaviour
 	void Start () 
 	{
 		playerCamera = gameObject.GetComponent<Camera>();
-		laserRenderer = gameObject.GetComponent<LineRenderer>();
+		laserRenderer = gameObject.AddComponent<LineRenderer>();
 		laserRenderer.useWorldSpace = true;
-		laserRenderer.material = new Material(Shader.Find("Particles/Additive"));
+		laserRenderer.material = laserRendererMaterial; //new Material(Shader.Find("Particles/Additive"));
 		laserRenderer.SetColors(laserColor_start, laserColor_end); // using same start/end color for now
 		laserRenderer.SetWidth(0.1f, 0.1f);
 		laserRenderer.SetVertexCount(2);
