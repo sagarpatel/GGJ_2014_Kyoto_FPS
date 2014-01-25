@@ -12,7 +12,8 @@ ehthumbs.db
 desktop.ini
 Thumbs.db
 
-GGJ_2014_FPS\UnityFolder\Temp\
-GGJ_2014_FPS\UnityFolder\Temp\Obj\*
-GGJ_2014_FPS\UnityFolder\Temp\UnityGenerated\*
-GGJ_2014_FPS\UnityFolder\Temp\Library\*
+\GGJ_2014_FPS\UnityFolder\Temp\*
+\GGJ_2014_FPS\UnityFolder\Obj\*
+\GGJ_2014_FPS\UnityFolder\UnityGenerated\*
+\GGJ_2014_FPS\UnityFolder\Library\*
+\GGJ_2014_FPS\UnityFolder\LocalBuilds\*
