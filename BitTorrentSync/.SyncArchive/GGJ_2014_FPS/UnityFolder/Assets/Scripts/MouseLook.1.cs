@@ -61,7 +61,7 @@ public class MouseLook : MonoBehaviour {
 			rigidbody.freezeRotation = true;
 	}*/
 
-	public float lookSensitivity = 10f;
+	public float lookSensitivity;
 	public float lookSmoothDamp = 0.1f;
 	float yRotation = 0;
 	float xRotation = 0;

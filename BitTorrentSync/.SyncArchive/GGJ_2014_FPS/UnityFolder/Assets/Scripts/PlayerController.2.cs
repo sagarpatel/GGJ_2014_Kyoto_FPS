@@ -19,11 +19,12 @@ public class PlayerController : MonoBehaviour {
 		velocity = transform.TransformDirection(velocity);
 		velocity *= moveSpeed;
 
-		//if(Input.GetAxis("Horizontal") || Input.GetAxis("Vertical")){
-		//	var target = 1f;
-		//}
-		//var newPosition = Mathf.SmoothDamp(transform.position.y, target.position.y, yVelocity, 0.3f);
-		//transform.position = Vector3(transform.position.x, newPosition, transform.position.z);
+		if(Input.GetAxis("Horizontal") || Input.GetAxis("Vertical")){
+			var target = 1f;
+		}
+		var newPosition = Mathf.SmoothDamp(transform.position.y, target.position.y,
+		                                           yVelocity, 0.3f);
+		transform.position = Vector3(transform.position.x, newPosition, transform.position.z);
 
 		controller.Move(velocity * Time.deltaTime);
 	}
