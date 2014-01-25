@@ -20,12 +20,7 @@ public class RenderCameraScript : MonoBehaviour
 	void Update () 
 	{
 
-		foreach(GameObject testScreen in GameObject.FindGameObjectsWithTag("Screen") )
-		{
-			//testScreen.renderer.material.mainTexture = renderTexture;
-			testScreen.GetComponent<ScreenObjectScript>().renderTexture = renderTexture;
-			testScreen.GetComponent<ScreenObjectScript>().pairedCamera = renderCamera;
-		}
+
 	
 	}
 

@@ -10,19 +10,15 @@ public class ScreenObjectScript : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		
+		pairedCamera = gameObject.GetComponentInChildren<RenderCameraScript>().transform.gameObject.GetComponent<Camera>();
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		if(renderTexture != null)
-		{
-			renderer.material.mainTexture = renderTexture;
-		}
 
-
-
+		renderTexture = gameObject.GetComponentInChildren<RenderCameraScript>().renderTexture;
+		renderer.material.mainTexture = renderTexture;
 
 	}
 

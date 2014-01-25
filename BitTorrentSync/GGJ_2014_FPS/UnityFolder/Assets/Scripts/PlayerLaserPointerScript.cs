@@ -10,7 +10,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 	public Color laserColor_start = Color.red;
 	public Color laserColor_end = Color.blue;
 	public float laserStartOffset = 0.2f;
-	public float laserLength = 10.0f;
+	public float laserLength = 100.0f;
 
 	public List<Vector3> laserVerticesList;
 
@@ -33,6 +33,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 
 		cursorObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 		cursorObject.transform.localScale = new Vector3(cursorScale, cursorScale, cursorScale);
+		cursorObject.GetComponent<SphereCollider>().enabled = false;
 
 	}
 	
@@ -44,7 +45,6 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		RaycastHit hitInfo;
 		if(Physics.Raycast(laserRay, out hitInfo, laserLength) )
 		{
-			Debug.Log("HHTIIING");
 			laserVerticesList[1] = hitInfo.point;
 			if(hitInfo.transform.gameObject.tag == "Screen")
 			{
@@ -61,7 +61,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 
 		if(Input.GetButtonUp("Fire1"))
 		{
-			transform.position = cursorObject.transform.position;
+			transform.parent.position = cursorObject.transform.position;
 		}
 	}
 
@@ -91,14 +91,20 @@ public class PlayerLaserPointerScript : MonoBehaviour
 
 
 		// place cursor in world space 
-		Camera renderCamera = screenObject.GetComponent<ScreenObjectScript>().pairedCamera;
-		Vector3 pixelCoord = new Vector3( renderCamera.pixelWidth * screenObjectHitInfo.textureCoord.x, renderCamera.pixelHeight * screenObjectHitInfo.textureCoord.y, 10);
+		Camera renderCamera = screenObject.GetComponentInChildren<ScreenObjectScript>().pairedCamera;
+		Vector3 pixelCoord = new Vector3( renderCamera.pixelWidth * screenObjectHitInfo.textureCoord.x, renderCamera.pixelHeight * screenObjectHitInfo.textureCoord.y, 4);
 		
+		Ray tempLaserRay = renderCamera.ScreenPointToRay(pixelCoord);
+		RaycastHit tempHitInfo;
+		if(Physics.Raycast(tempLaserRay, out tempHitInfo, laserLength) )
+		{
+			Debug.Log("HITTING END POSITION");
+			cursorObject.transform.position = tempHitInfo.point;
+			Debug.Log(tempHitInfo.point);
 
-		Vector3 worldPositionCursor = renderCamera.ScreenToWorldPoint(pixelCoord);
-		cursorObject.transform.position = worldPositionCursor;
+		}
 
-		Debug.Log(worldPositionCursor);
+		
 
 	}
 
