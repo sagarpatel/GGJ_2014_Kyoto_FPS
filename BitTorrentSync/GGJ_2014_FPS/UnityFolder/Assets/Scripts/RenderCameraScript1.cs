@@ -5,8 +5,8 @@ public class RenderCameraScript1 : MonoBehaviour
 {
 
 	public RenderTexture renderTexture;
-	public int textureWidth = 108;
-	public int textureHeight = 72;
+	public int textureWidth = 1080;
+	public int textureHeight = 720;
 	Camera renderCamera;
 	// Use this for initialization
 	void Start () 
@@ -19,12 +19,7 @@ public class RenderCameraScript1 : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-
-		foreach(GameObject testScreen in GameObject.FindGameObjectsWithTag("Screen") )
-		{
-			testScreen.renderer.material.mainTexture = renderTexture;
-		}
-	
+		transform.parent.transform.renderer.material.mainTexture = renderTexture;
 	}
 
 

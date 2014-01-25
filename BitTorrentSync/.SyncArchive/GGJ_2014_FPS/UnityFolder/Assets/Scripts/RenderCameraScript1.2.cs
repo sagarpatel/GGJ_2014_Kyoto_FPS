@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RenderCameraScript : MonoBehaviour 
+public class RenderCameraScript1 : MonoBehaviour 
 {
 
 	public RenderTexture renderTexture;
@@ -19,13 +19,7 @@ public class RenderCameraScript : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-
-		foreach(GameObject testScreen in GameObject.FindGameObjectsWithTag("Screen") )
-		{
-			//testScreen.renderer.material.mainTexture = renderTexture;
-			testScreen.GetComponent<ScreenObjectScript>().renderTexture = renderTexture;
-			testScreen.GetComponent<ScreenObjectScript>().pairedCamera = renderCamera;
-		}
+		transform.parent.transform.renderer.material.mainTexture = renderTexture;
 	
 	}
 

@@ -14,6 +14,9 @@ public class PlayerLaserPointerScript : MonoBehaviour
 
 	public List<Vector3> laserVerticesList;
 
+	GameObject cursorObject;
+	public float cursorScale = 0.1f;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -28,6 +31,9 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		laserVerticesList.Add(transform.position);
 		laserVerticesList.Add(transform.position + laserLength * transform.forward);
 
+		cursorObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+		cursorObject.transform.localScale = new Vector3(cursorScale, cursorScale, cursorScale);
+
 	}
 	
 	// Update is called once per frame
@@ -40,6 +46,10 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		{
 			Debug.Log("HHTIIING");
 			laserVerticesList[1] = hitInfo.point;
+			if(hitInfo.transform.gameObject.tag == "Screen")
+			{
+				HandleLaserOnScreen(hitInfo);
+			}
 		}
 		else
 		{
@@ -61,6 +71,29 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		{
 			laserRenderer.SetPosition(i, laserVerticesList[i]);
 		}
+
+	}
+
+	void HandleLaserOnScreen(RaycastHit screenObjectHitInfo)
+	{
+		GameObject screenObject = screenObjectHitInfo.transform.gameObject;
+		Vector3 screenCoordinates = new Vector3(0, 0, 0);
+
+		Vector3 worldPositionHit = screenObjectHitInfo.point;
+		screenCoordinates = screenObject.transform.position - worldPositionHit;
+		
+
+
+
+		// place cursor in world space 
+		Camera renderCamera = screenObject.GetComponent<ScreenObjectScript>().pairedCamera;
+		Vector3 pixelCoord = new Vector3( renderCamera.pixelWidth * screenObjectHitInfo.textureCoord.x, renderCamera.pixelHeight * screenObjectHitInfo.textureCoord.y, 2);
+		
+
+		Vector3 worldPositionCursor = renderCamera.ScreenToWorldPoint(pixelCoord);
+		cursorObject.transform.position = worldPositionCursor;
+
+		Debug.Log(worldPositionCursor);
 
 	}
 
