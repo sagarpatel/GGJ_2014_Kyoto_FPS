@@ -18,6 +18,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 	public float cursorScale = 0.1f;
 
 	public float teleportHeighOffset = 1.0f;
+	public Vector3 grabbedObjectPosition;
 
 	// Use this for initialization
 	void Start () 
@@ -42,7 +43,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		Vector3 screenPos = new Vector3(playerCamera.pixelWidth/2.0f, playerCamera.pixelWidth/2.0f, 0);
+		Vector3 screenPos = new Vector3(playerCamera.pixelWidth/2.0f, playerCamera.pixelWidth/3.0f, 0);
 		Ray laserRay = playerCamera.ScreenPointToRay(screenPos);
 		RaycastHit hitInfo;
 		if(Physics.Raycast(laserRay, out hitInfo, laserLength) )
@@ -51,6 +52,9 @@ public class PlayerLaserPointerScript : MonoBehaviour
 			if(hitInfo.transform.gameObject.tag == "Screen")
 			{
 				HandleLaserOnScreen(hitInfo);
+				
+
+				
 			}
 		}
 		else
@@ -61,10 +65,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 
 		HandleLaser();
 
-		if(Input.GetButtonUp("Fire1"))
-		{
-			transform.parent.position = cursorObject.transform.position + new Vector3(0, teleportHeighOffset, 0);
-		}
+		
 	}
 
 	void HandleLaser()
@@ -88,9 +89,6 @@ public class PlayerLaserPointerScript : MonoBehaviour
 
 		Vector3 worldPositionHit = screenObjectHitInfo.point;
 		screenCoordinates = screenObject.transform.position - worldPositionHit;
-		
-
-
 
 		// place cursor in world space 
 		Camera renderCamera = screenObject.GetComponentInChildren<ScreenObjectScript>().pairedCamera;
@@ -100,14 +98,33 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		RaycastHit tempHitInfo;
 		if(Physics.Raycast(tempLaserRay, out tempHitInfo, laserLength) )
 		{
-			Debug.Log("HITTING END POSITION");
-			cursorObject.transform.position = tempHitInfo.point;
-			Debug.Log(tempHitInfo.point);
+			if(tempHitInfo.transform.gameObject.tag == "Grab")
+			{
+				if(Input.GetButtonUp("Fire2"))
+				{
+					GrabGameOobject(tempHitInfo.transform.gameObject);
+				}
+				
+			}
+			else
+			{
+				cursorObject.transform.position = tempHitInfo.point;
+				if(Input.GetButtonUp("Fire1"))
+				{
+					transform.parent.position = cursorObject.transform.position + new Vector3(0, teleportHeighOffset, 0);
+				}
+			}
 
 		}
 
 		
 
+	}
+
+	void GrabGameOobject(GameObject targetGameObject)
+	{
+		targetGameObject.transform.parent = transform;
+		targetGameObject.transform.localPosition = grabbedObjectPosition;
 	}
 
 
