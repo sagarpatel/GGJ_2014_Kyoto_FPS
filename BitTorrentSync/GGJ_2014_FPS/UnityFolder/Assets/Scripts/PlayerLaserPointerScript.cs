@@ -26,6 +26,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		playerCamera = gameObject.GetComponent<Camera>();
 		laserRenderer = gameObject.GetComponent<LineRenderer>();
 		laserRenderer.useWorldSpace = true;
+		laserRenderer.material = new Material(Shader.Find("Particles/Additive"));
 		laserRenderer.SetColors(laserColor_start, laserColor_end); // using same start/end color for now
 		laserRenderer.SetWidth(0.1f, 0.1f);
 		laserRenderer.SetVertexCount(2);
