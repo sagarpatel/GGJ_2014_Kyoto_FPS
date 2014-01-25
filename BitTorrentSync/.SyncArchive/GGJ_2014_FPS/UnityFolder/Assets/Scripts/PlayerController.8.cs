@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate () {
 		Vector3 velocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-		velocity = transform.FindChild("Main Camera").transform.TransformDirection(velocity);
+
+		velocity = transform.TransformDirection(velocity);
 		velocity *= moveSpeed;
 		controller.Move(velocity * Time.deltaTime);
 	}

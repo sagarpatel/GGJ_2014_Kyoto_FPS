@@ -20,8 +20,10 @@ public class RenderCameraScript : MonoBehaviour
 	void Update () 
 	{
 
-		GameObject testScreen = GameObject.FindWithTag("Screen");
-		testScreen.renderer.material.mainTexture = renderTexture;
+		foreach(GameObject testScreen in GameObject.FindGameObjectsWithTag("Screen") )
+		{
+			testScreen.renderer.material.mainTexture = renderTexture;
+		}
 	
 	}
 
