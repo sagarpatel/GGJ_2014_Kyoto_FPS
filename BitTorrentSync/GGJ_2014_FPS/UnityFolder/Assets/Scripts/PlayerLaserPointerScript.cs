@@ -17,6 +17,8 @@ public class PlayerLaserPointerScript : MonoBehaviour
 	GameObject cursorObject;
 	public float cursorScale = 0.1f;
 
+	public float teleportHeighOffset = 1.0f;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -61,7 +63,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 
 		if(Input.GetButtonUp("Fire1"))
 		{
-			transform.parent.position = cursorObject.transform.position;
+			transform.parent.position = cursorObject.transform.position + new Vector3(0, teleportHeighOffset, 0);
 		}
 	}
 
