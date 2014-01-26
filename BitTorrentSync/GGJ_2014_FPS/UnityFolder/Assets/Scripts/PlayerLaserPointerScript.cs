@@ -140,6 +140,11 @@ public class PlayerLaserPointerScript : MonoBehaviour
 						Debug.Log("ABOUT TO GRAB");
 						GrabGameOobject(tempHitInfo, renderCamera);
 						currentlyGrabbedObject = tempHitInfo.transform.gameObject;				
+						if(currentlyGrabbedObject.GetComponent<RotateScript>())
+						{
+							currentlyGrabbedObject.GetComponent<RotateScript>().isRotating = false;
+							currentlyGrabbedObject.transform.rotation = Quaternion.identity;	
+						}
 					}
 				}
 				else // Drop the object into the scene
@@ -147,6 +152,8 @@ public class PlayerLaserPointerScript : MonoBehaviour
 					Debug.Log("DROPPIN IT LIKE ITS HAWT");
 					currentlyGrabbedObject.transform.parent = null;
 					currentlyGrabbedObject.transform.position = cursorObject.transform.position + objectDropOffset;
+					if(currentlyGrabbedObject.GetComponent<RotateScript>())
+						currentlyGrabbedObject.GetComponent<RotateScript>().isRotating = true;
 					currentlyGrabbedObject = null;
 				}
 			}
@@ -164,7 +171,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 					else
 					{
 						inceptionLevelCounter = 0;
-						teleportPosition= cursorObject.transform.position + new Vector3(0, teleportHeighOffset, 0);
+						teleportPosition= cursorObject.transform.position + new Vector3(0, teleportHeighOffset, 0) + 1.0f* tempHitInfo.normal ;
 						StartCoroutine("AnimateWarp");
 						
 					}
