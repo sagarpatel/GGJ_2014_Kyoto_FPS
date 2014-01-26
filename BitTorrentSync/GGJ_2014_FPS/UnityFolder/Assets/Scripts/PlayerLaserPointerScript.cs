@@ -25,6 +25,9 @@ public class PlayerLaserPointerScript : MonoBehaviour
 	public int inceptionLimit = 5;
 	public int inceptionLevelCounter = 0;
 
+	GameObject currentlyGrabbedObject;
+	public Vector3 objectDropOffset;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -58,9 +61,6 @@ public class PlayerLaserPointerScript : MonoBehaviour
 			if(hitInfo.transform.gameObject.tag == "Screen")
 			{
 				HandleLaserOnScreen(hitInfo);
-				
-
-				
 			}
 		}
 		else
@@ -104,19 +104,41 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		RaycastHit tempHitInfo;
 		if(Physics.Raycast(tempLaserRay, out tempHitInfo, laserLength) )
 		{
-			// Grab
-			if(tempHitInfo.transform.gameObject.tag == "Grab")
+			
+			cursorObject.transform.position = tempHitInfo.point;
+
+			if(Input.GetButtonUp("Fire2"))
 			{
-				if(Input.GetButtonUp("Fire2"))
-				{
-					GrabGameOobject(tempHitInfo, renderCamera);
-				}
+				// Check if already holding an object
+				bool isCurrentlyGrabbingObject = false;
 				
+				foreach(Transform child in transform)
+				{
+					Debug.Log(child.gameObject);
+					if(child.gameObject.tag == "Grab")
+						currentlyGrabbedObject = child.gameObject;
+				}
+
+				// Only try to grab something if not holding anything
+				if(currentlyGrabbedObject == null)
+				{
+					if(tempHitInfo.transform.gameObject.tag == "Grab")
+					{
+						GrabGameOobject(tempHitInfo, renderCamera);
+						currentlyGrabbedObject = tempHitInfo.transform.gameObject;				
+					}
+				}
+				else // Drop the object into the scene
+				{	
+					Debug.Log("DROPPIN IT LIKE ITS HAWT");
+					currentlyGrabbedObject.transform.parent = null;
+					currentlyGrabbedObject.transform.position = cursorObject.transform.position + objectDropOffset;
+					currentlyGrabbedObject = null;
+				}
 			}
 			else
 			{
 				// Teleport
-				cursorObject.transform.position = tempHitInfo.point;
 				if(Input.GetButtonUp("Fire1"))
 				{
 					if(tempHitInfo.transform.gameObject.tag == "Screen" && inceptionLevelCounter < inceptionLimit )
@@ -150,6 +172,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 
 		targetGameObject.transform.parent = transform;
 		targetGameObject.transform.localPosition = grabbedObjectPosition;
+		targetGameObject.transform.rotation = Quaternion.identity;
 	}
 
 	float CalculateScreenScale(RaycastHit grabObjectHitInfo, Camera lastCamera)
