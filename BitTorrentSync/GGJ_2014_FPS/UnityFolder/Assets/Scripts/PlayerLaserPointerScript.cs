@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class PlayerLaserPointerScript : MonoBehaviour 
 {
-	Camera playerCamera;
+	public Camera playerCamera;
 	LineRenderer laserRenderer;
 
 	public Material laserRendererMaterial;
@@ -36,6 +36,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 	void Start () 
 	{
 		playerCamera = gameObject.GetComponent<Camera>();
+		
 		laserRenderer = gameObject.AddComponent<LineRenderer>();
 		laserRenderer.useWorldSpace = true;
 		laserRenderer.material = laserRendererMaterial; //new Material(Shader.Find("Particles/Additive"));
@@ -219,7 +220,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		*/
 
 
-		
+
 		float scaleRatio = screenWidth / cameraWidth;
 		/*
 		float playerCameraScaleRatio = screenWidth /Vector3.Distance(screenObject.transform.position, playerCamera.transform.position);
@@ -236,7 +237,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		screenCoordRight.z = 0;
 		float viewportScaler =  Vector3.Distance(screenCoordLeft, screenCoordRight);
 
-		Debug.Log(viewportScaler);
+		//Debug.Log(viewportScaler);
 
 		return scaleRatio * viewportScaler ;
 	}
@@ -246,10 +247,11 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		float timeCounter = 0;
 		while(true)
 		{	
-			Debug.Log("IM WARPOING");
+			//Debug.Log("IM WARPOING");
+
 			timeCounter += Time.deltaTime;
 
-			playerCamera.fieldOfView = Mathf.Lerp(60, 179, timeCounter/warpAnimationDuration) ;
+			playerCamera.fieldOfView = Mathf.Lerp(60, 5, timeCounter/warpAnimationDuration) ;
 
 			if(timeCounter > warpAnimationDuration)
 				break;

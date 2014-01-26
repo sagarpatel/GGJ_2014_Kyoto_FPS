@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class DoorScript : MonoBehaviour {
-	
+
+	public AudioClip se;
 	public float unlockableDisntance = 4f;
 	private bool isUnlockable = false;
 	private int labelWidth=120;
@@ -26,6 +27,8 @@ public class DoorScript : MonoBehaviour {
 		}
 		if(distance < unlockableDisntance && isKey){
 			isUnlockable = true;
+		}else{
+			isUnlockable = false;
 		}
 		if( isUnlockable && Input.GetKeyDown ("space")){
 			Destroy (this.gameObject);
