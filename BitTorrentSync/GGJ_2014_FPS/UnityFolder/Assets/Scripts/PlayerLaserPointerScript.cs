@@ -22,6 +22,9 @@ public class PlayerLaserPointerScript : MonoBehaviour
 	public float teleportHeighOffset = 1.0f;
 	public Vector3 grabbedObjectPosition;
 
+	public int inceptionLimit = 5;
+	public int inceptionLevelCounter = 0;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -101,6 +104,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		RaycastHit tempHitInfo;
 		if(Physics.Raycast(tempLaserRay, out tempHitInfo, laserLength) )
 		{
+			// Grab
 			if(tempHitInfo.transform.gameObject.tag == "Grab")
 			{
 				if(Input.GetButtonUp("Fire2"))
@@ -111,10 +115,21 @@ public class PlayerLaserPointerScript : MonoBehaviour
 			}
 			else
 			{
+				// Teleport
 				cursorObject.transform.position = tempHitInfo.point;
 				if(Input.GetButtonUp("Fire1"))
 				{
-					transform.parent.position = cursorObject.transform.position + new Vector3(0, teleportHeighOffset, 0);
+					if(tempHitInfo.transform.gameObject.tag == "Screen" && inceptionLevelCounter < inceptionLimit )
+					{
+						//  RECURSE FOREVERMORE
+						inceptionLevelCounter ++;
+						HandleLaserOnScreen(tempHitInfo);
+					}
+					else
+					{
+						inceptionLevelCounter = 0;
+						transform.parent.position = cursorObject.transform.position + new Vector3(0, teleportHeighOffset, 0);
+					}
 				}
 			}
 
@@ -147,7 +162,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		float cameraWidth = distanceToObject * Mathf.Tan(cameraFOV * Mathf.Deg2Rad);
 		
 		// need to find width of the physical screen displaying this camera (this allows us to caluclated the scaling)
-		GameObject screenObject = lastCamera.transform.gameObject.GetComponent<RenderCameraScript>().pairedScreen;
+		GameObject screenObject = lastCamera.transform.gameObject.GetComponent<RenderCameraScript_ManualPair>().pairedScreen;
 		Bounds screenBounds = screenObject.GetComponent<Renderer>().bounds;
 		float screenWidth = screenBounds.size.x;
 
