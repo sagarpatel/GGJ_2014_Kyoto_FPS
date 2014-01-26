@@ -94,7 +94,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		screenCoordinates = screenObject.transform.position - worldPositionHit;
 
 		// place cursor in world space 
-		Camera renderCamera = screenObject.GetComponentInChildren<ScreenObjectScript>().pairedCamera;
+		Camera renderCamera = screenObject.GetComponentInChildren<ScreenObjectScript_ManualPair>().pairedCamera;
 		Vector3 pixelCoord = new Vector3( renderCamera.pixelWidth * screenObjectHitInfo.textureCoord.x, renderCamera.pixelHeight * screenObjectHitInfo.textureCoord.y, 4);
 		
 		Ray tempLaserRay = renderCamera.ScreenPointToRay(pixelCoord);
