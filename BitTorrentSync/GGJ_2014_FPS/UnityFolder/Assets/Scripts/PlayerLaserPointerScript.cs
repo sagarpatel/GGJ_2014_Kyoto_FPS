@@ -16,9 +16,9 @@ public class PlayerLaserPointerScript : MonoBehaviour
 
 	public List<Vector3> laserVerticesList;
 
+	public GameObject cursorObjectPrefab;
 	GameObject cursorObject;
-	public float cursorScale = 0.1f;
-
+	
 	public float teleportHeighOffset = 1.0f;
 	public Vector3 grabbedObjectPosition;
 
@@ -30,6 +30,8 @@ public class PlayerLaserPointerScript : MonoBehaviour
 
 	public float warpAnimationDuration = 1.0f;
 
+	Vector3 teleportPosition;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -38,16 +40,16 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		laserRenderer.useWorldSpace = true;
 		laserRenderer.material = laserRendererMaterial; //new Material(Shader.Find("Particles/Additive"));
 		laserRenderer.SetColors(laserColor_start, laserColor_end); // using same start/end color for now
-		laserRenderer.SetWidth(0.1f, 0.1f);
+		laserRenderer.SetWidth(0.0151f, 0.0151f);
 		laserRenderer.SetVertexCount(2);
 
 		laserVerticesList = new List<Vector3>();
 		laserVerticesList.Add(transform.position);
 		laserVerticesList.Add(transform.position + laserLength * transform.forward);
 
-		cursorObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-		cursorObject.transform.localScale = new Vector3(cursorScale, cursorScale, cursorScale);
-		cursorObject.GetComponent<SphereCollider>().enabled = false;
+		cursorObject = (GameObject)Instantiate(cursorObjectPrefab, transform.position, Quaternion.identity);
+		//cursorObject.transform.localScale = new Vector3(cursorScale, cursorScale, cursorScale);
+		//cursorObject.GetComponent<SphereCollider>().enabled = false;
 
 	}
 	
@@ -104,6 +106,13 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		{
 			
 			cursorObject.transform.position = tempHitInfo.point;
+			/*
+			if(tempHitInfo.transform.gameObject.tag == "Screen")
+				cursorObject.renderer.enabled = true;
+			else
+				cursorObject.renderer.enabled = false;
+			*/
+
 
 			if(Input.GetButtonUp("Fire2"))
 			{
@@ -148,6 +157,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 					else
 					{
 						inceptionLevelCounter = 0;
+						teleportPosition= cursorObject.transform.position + new Vector3(0, teleportHeighOffset, 0);
 						StartCoroutine("AnimateWarp");
 						
 					}
@@ -155,6 +165,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 			}
 
 		}
+		
 
 		
 
@@ -241,7 +252,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 			yield return null;
 		}
 
-		transform.parent.position = cursorObject.transform.position + new Vector3(0, teleportHeighOffset, 0);
+		transform.parent.position = teleportPosition; // cursorObject.transform.position + new Vector3(0, teleportHeighOffset, 0);
 		playerCamera.fieldOfView = 60.0f;
 
 	}

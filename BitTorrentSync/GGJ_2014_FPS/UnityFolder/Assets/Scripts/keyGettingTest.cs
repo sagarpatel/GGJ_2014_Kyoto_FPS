@@ -16,7 +16,7 @@ public class keyGettingTest : MonoBehaviour {
 	void Update()
 	{
 		if(Time.time - lastTime > 0.5f && isGetKey){
-			this.gameObject.SetActiveRecursively(false);
+			//this.gameObject.SetActiveRecursively(false);
 		}
 	}
 
@@ -24,7 +24,6 @@ public class keyGettingTest : MonoBehaviour {
 	{
 		isGetKey = true;
 		lastTime = Time.time;
-		GameObject.FindWithTag("Player").SendMessage("GetKey");
 		audioSource.Play();
 	}
 
