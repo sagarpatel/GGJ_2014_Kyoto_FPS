@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class DoorScript : MonoBehaviour {
-
-	public AudioClip doorSE;
+	
 	public float unlockableDisntance = 4f;
 	private bool isUnlockable = false;
 	private int labelWidth=120;

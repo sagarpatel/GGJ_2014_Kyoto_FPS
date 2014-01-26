@@ -51,6 +51,8 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		//cursorObject.transform.localScale = new Vector3(cursorScale, cursorScale, cursorScale);
 		//cursorObject.GetComponent<SphereCollider>().enabled = false;
 
+		Screen.showCursor = false;
+
 	}
 	
 	// Update is called once per frame
@@ -129,8 +131,12 @@ public class PlayerLaserPointerScript : MonoBehaviour
 				// Only try to grab something if not holding anything
 				if(currentlyGrabbedObject == null)
 				{
+					Debug.Log("TRYING TO GRAB");
+					Debug.Log(tempHitInfo.transform.gameObject);
 					if(tempHitInfo.transform.gameObject.tag == "Grab")
 					{
+						Debug.Log(tempHitInfo.transform.gameObject);
+						Debug.Log("ABOUT TO GRAB");
 						GrabGameOobject(tempHitInfo, renderCamera);
 						currentlyGrabbedObject = tempHitInfo.transform.gameObject;				
 					}
@@ -177,7 +183,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 
 		if(targetGameObject.GetComponent<GrabbableObjectScript>().isScaled == true)
 		{
-			targetGameObject.transform.localScale *= CalculateScreenScale(grabObjectHitInfo, lastCamera);
+			targetGameObject.transform.localScale *= 1.0f; //CalculateScreenScale(grabObjectHitInfo, lastCamera);
 		}
 
 		targetGameObject.transform.parent = transform;
