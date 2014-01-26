@@ -28,6 +28,8 @@ public class PlayerLaserPointerScript : MonoBehaviour
 	GameObject currentlyGrabbedObject;
 	public Vector3 objectDropOffset;
 
+	public float warpAnimationDuration = 1.0f;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -67,11 +69,7 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		{
 			laserVerticesList[1] = transform.position + laserLength * laserRay.direction;
 		}
-
-
 		HandleLaser();
-
-		
 	}
 
 	void HandleLaser()
@@ -150,7 +148,8 @@ public class PlayerLaserPointerScript : MonoBehaviour
 					else
 					{
 						inceptionLevelCounter = 0;
-						transform.parent.position = cursorObject.transform.position + new Vector3(0, teleportHeighOffset, 0);
+						StartCoroutine("AnimateWarp");
+						
 					}
 				}
 			}
@@ -223,6 +222,28 @@ public class PlayerLaserPointerScript : MonoBehaviour
 		Debug.Log(viewportScaler);
 
 		return scaleRatio * viewportScaler ;
+	}
+
+	IEnumerator AnimateWarp()
+	{
+		float timeCounter = 0;
+		while(true)
+		{	
+			Debug.Log("IM WARPOING");
+			timeCounter += Time.deltaTime;
+
+			playerCamera.fieldOfView = Mathf.Lerp(60, 179, timeCounter/warpAnimationDuration) ;
+
+			if(timeCounter > warpAnimationDuration)
+				break;
+
+			//Debug.Log()
+			yield return null;
+		}
+
+		transform.parent.position = cursorObject.transform.position + new Vector3(0, teleportHeighOffset, 0);
+		playerCamera.fieldOfView = 60.0f;
+
 	}
 
 
