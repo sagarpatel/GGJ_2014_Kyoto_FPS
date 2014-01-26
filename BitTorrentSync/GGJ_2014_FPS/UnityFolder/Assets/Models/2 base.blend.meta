@@ -30,6 +30,7 @@ ModelImporter:
     100048: camera_001
     100050: house_ground
     100052: dog
+    100054: door
     400000: //RootNode
     400002: base_ground
     400004: fence
@@ -57,6 +58,7 @@ ModelImporter:
     400048: camera_001
     400050: house_ground
     400052: dog
+    400054: door
     2300000: base_ground
     2300002: fence
     2300004: house
@@ -83,6 +85,7 @@ ModelImporter:
     2300046: camera_001
     2300048: house_ground
     2300050: dog
+    2300052: door
     3300000: base_ground
     3300002: fence
     3300004: house
@@ -109,6 +112,7 @@ ModelImporter:
     3300046: camera_001
     3300048: house_ground
     3300050: dog
+    3300052: door
     4300000: fence
     4300002: house
     4300004: base_ground
@@ -135,6 +139,7 @@ ModelImporter:
     4300046: camera_001
     4300048: house_ground
     4300050: dog
+    4300052: door
     7400000: Default Take
     9500000: //RootNode
   materials:
